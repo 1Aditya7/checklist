@@ -22,12 +22,12 @@ export default function RuleCard({ id, rule, interpretation, checked }: RuleProp
     >
       <div>
         <p className="font-semibold text-black">{rule}</p>
-        <p className="text-sm text-gray-500 italic">{interpretation}</p>
+        <p className="text-sm text-gray-500">{interpretation}</p>
       </div>
       <input
         type="checkbox"
         checked={checked}
-        onChange={() => toggleRule(id)}
+        onChange={() => toggleRule(id)} // Toggle rule on checkbox click
         className="w-5 h-5 cursor-pointer"
       />
     </div>

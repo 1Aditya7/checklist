@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import { useRulesStore } from "./store/useRulesStore";
 import RuleCard from "../app/components/ruleCard";
-import ProgressBar from "../app/components/ProgressBar"; 
+import ProgressBar from "../app/components/ProgressBar";
+import ResetButton from "../app/components/resetButton"; // Import ResetButton
 
 export default function Home() {
   const rules = useRulesStore((state) => state.rules);
@@ -30,6 +31,11 @@ export default function Home() {
         {rules.map((rule) => (
           <RuleCard key={rule.id} {...rule} />
         ))}
+      </div>
+
+      {/* Reset Button */}
+      <div className="mt-8 text-center">
+        <ResetButton /> {/* Add ResetButton here */}
       </div>
     </main>
   );

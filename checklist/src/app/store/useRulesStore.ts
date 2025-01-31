@@ -1,7 +1,7 @@
 "use client";
 
 import { create } from "zustand";
-import { rules } from "../data/rules";
+import { rules } from "../data/rules"; // Assuming 'rules' is your initial set of data
 
 // Type Definitions
 type Rule = {
@@ -16,6 +16,7 @@ type Rule = {
 type RulesState = {
   rules: Rule[];
   toggleRule: (id: string) => void;
+  resetRules: () => void; // New method to reset rules
 };
 
 // Load saved rules from localStorage (or use default rules)
@@ -43,6 +44,20 @@ export const useRulesStore = create<RulesState>((set) => ({
       }
 
       return { rules: updatedRules };
+    });
+  },
+
+  resetRules: () => {
+    set(() => {
+      // Reset the rules to their initial state (unchecked)
+      const resetRules = rules.map((rule) => ({ ...rule, checked: false }));
+
+      // Clear the localStorage
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("fs-rules");
+      }
+
+      return { rules: resetRules }; // Return the reset state
     });
   },
 }));
