@@ -8,7 +8,7 @@ type Rule = {
   slNo: number; // Unique identifier
   ruleIndex: string;
   name?: string;
-  rule: string; // Rule description
+  rule: string;
   diagramOrSpecs?: string;
   checked: boolean;
 };
@@ -21,11 +21,18 @@ type RulesState = {
 };
 
 // Ensure unique `slNo` using a Set
-const formatRules = (rawRules: any[]): Rule[] => {
+const formatRules = (rawRules: Array<{
+  slNo: string | number;
+  ruleIndex: string;
+  name?: string;
+  rule: string;
+  diagramOrSpecs?: string;
+  checked?: boolean;
+}>): Rule[] => {
   const seenSlNos = new Set<number>();
 
-  return rawRules.map((rule, index) => {
-    const slNo = rule.slNo ? Number(rule.slNo) : index + 1; // Generate fallback `slNo`
+  return rawRules.map((rule) => {
+    const slNo = rule.slNo ? Number(rule.slNo) : 0; // Generate fallback `slNo`
     seenSlNos.add(slNo); // Add to Set to ensure uniqueness
 
     return {
@@ -79,7 +86,7 @@ export const useRulesStore = create<RulesState>((set) => ({
   addUniqueSlNo: () => {
     set((state) => {
       const seenSlNos = new Set<number>();
-      const updatedRules = state.rules.map((rule, index) => {
+      const updatedRules = state.rules.map((rule) => {
         if (seenSlNos.has(rule.slNo)) {
           rule.slNo = Math.max(...Array.from(seenSlNos)) + 1; // Generate a unique `slNo` if duplicated
         }
