@@ -18,7 +18,7 @@ export default function Home() {
   if (!isHydrated) return null;
 
   return (
-    <main className="flex-auto min-w-0 flex flex-col px-6 sm:px-4 md:px-0 max-w-[640px] w-full bg-gray-100 mt-12">
+    <main className="flex-auto min-w-0 flex flex-col px-6 sm:px-4 md:px-0 max-w-[640px] w-full mt-12">
       <div className="flex justify-center">
         <h1 className="text-4xl text-black font-black tracking-tight text-center">
           The Only Formula Student <br /> Checklist You Need

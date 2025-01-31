@@ -1,6 +1,7 @@
 "use client";
 
 import { useRulesStore } from "../store/useRulesStore";
+import { Card, CardContent } from "@/components/ui/card"
 import clsx from "clsx";
 
 // Define RuleCard component's props
@@ -13,6 +14,11 @@ type RuleProps = {
   checked: boolean;
 };
 
+const cardContent = {
+  title: "Lorem ipsum dolor",
+  description: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nostrum, hic ipsum! Qui dicta debitis aliquid quo molestias explicabo iure!"
+}
+
 export default function RuleCard({
   slNo,
   ruleIndex,
@@ -24,6 +30,7 @@ export default function RuleCard({
   const toggleRule = useRulesStore((state) => state.toggleRule);
 
   return (
+
     <div
       className={clsx(
         "p-4 border rounded-lg shadow-md flex justify-between items-center",
