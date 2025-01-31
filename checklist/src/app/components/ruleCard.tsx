@@ -21,7 +21,7 @@ export default function RuleCard({ id, rule, interpretation, checked }: RuleProp
       )}
     >
       <div>
-        <p className="font-semibold">{rule}</p>
+        <p className="font-semibold text-black">{rule}</p>
         <p className="text-sm text-gray-500 italic">{interpretation}</p>
       </div>
       <input

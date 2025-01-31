@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRulesStore } from "./store/useRulesStore";
 import RuleCard from "../app/components/ruleCard";
+import ProgressBar from "../app/components/ProgressBar"; 
 
 export default function Home() {
   const rules = useRulesStore((state) => state.rules);
@@ -23,7 +24,7 @@ export default function Home() {
           The Only Formula Student <br /> Checklist You Need
         </h1>
       </div>
-
+      <ProgressBar />
       {/* Rule Checklist */}
       <div className="mt-6 space-y-4">
         {rules.map((rule) => (
