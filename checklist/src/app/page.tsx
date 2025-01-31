@@ -4,13 +4,12 @@ import { useEffect, useState } from "react";
 import { useRulesStore } from "./store/useRulesStore";
 import RuleCard from "../app/components/ruleCard";
 import ProgressBar from "../app/components/ProgressBar";
-import ResetButton from "../app/components/resetButton"; // Import ResetButton
+import ResetButton from "../app/components/ResetButton";
 
 export default function Home() {
   const rules = useRulesStore((state) => state.rules);
   const [isHydrated, setIsHydrated] = useState(false);
 
-  // Ensure hydration before rendering rules to prevent SSR mismatch
   useEffect(() => {
     setIsHydrated(true);
   }, []);
@@ -25,17 +24,28 @@ export default function Home() {
           The Only Formula Student <br /> Checklist You Need
         </h1>
       </div>
+      <div className="flex flex-col mt-12 text-black font-bold tracking-tight text-2xl justify-start">Formula Bharat 2025 Rules</div>
+      <div className="text-gray-500">For Combustion Vehicles {"(CV)"}</div>
       <ProgressBar />
-      {/* Rule Checklist */}
+      <div className="mt-4 flex justify-end">
+      <ResetButton />
+      </div>
+      {/* Render all rules as cards */}
       <div className="mt-6 space-y-4">
-        {rules.map((rule) => (
-          <RuleCard key={rule.id} {...rule} />
+        {rules.map((rule, index) => (
+          <RuleCard
+            key={rule.slNo || `fallback-${index}`} // Ensure unique key for cards
+            slNo={rule.slNo} // Passed for state management
+            ruleIndex={rule.ruleIndex}
+            name={rule.name}
+            description={rule.rule}
+            diagrams={rule.diagramOrSpecs}
+            checked={rule.checked}
+          />
         ))}
       </div>
-
-      {/* Reset Button */}
       <div className="mt-8 text-center">
-        <ResetButton /> {/* Add ResetButton here */}
+        <ResetButton />
       </div>
     </main>
   );

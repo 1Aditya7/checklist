@@ -3,14 +3,24 @@
 import { useRulesStore } from "../store/useRulesStore";
 import clsx from "clsx";
 
+// Define RuleCard component's props
 type RuleProps = {
-  id: string;
-  rule: string;
-  interpretation: string;
+  slNo: number;
+  ruleIndex: string;
+  name?: string; // Allow name to be undefined
+  description: string;
+  diagrams: string | undefined; // Keep diagrams as string | undefined
   checked: boolean;
 };
 
-export default function RuleCard({ id, rule, interpretation, checked }: RuleProps) {
+export default function RuleCard({
+  slNo,
+  ruleIndex,
+  name,
+  description,
+  diagrams,
+  checked,
+}: RuleProps) {
   const toggleRule = useRulesStore((state) => state.toggleRule);
 
   return (
@@ -21,13 +31,14 @@ export default function RuleCard({ id, rule, interpretation, checked }: RuleProp
       )}
     >
       <div>
-        <p className="font-semibold text-black">{rule}</p>
-        <p className="text-sm text-gray-500">{interpretation}</p>
+        <p className="font-semibold text-black">{ruleIndex} {name || ""}</p> {/* Use fallback if name is undefined */}
+        <p className="text-sm text-gray-500">{description}</p>
+        <p className="text-xs text-gray-400">{diagrams}</p>
       </div>
       <input
         type="checkbox"
         checked={checked}
-        onChange={() => toggleRule(id)} // Toggle rule on checkbox click
+        onChange={() => toggleRule(slNo)} // Toggle rule on checkbox click
         className="w-5 h-5 cursor-pointer"
       />
     </div>

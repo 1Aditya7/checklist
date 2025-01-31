@@ -1,44 +1,61 @@
 "use client";
 
 import { create } from "zustand";
-import { rules } from "../data/rules"; // Assuming 'rules' is your initial set of data
+import { rules as rawRules } from "../data/rules";
 
-// Type Definitions
+// Define Rule Type
 type Rule = {
-  id: string;
-  rulebook: string;
-  category: string;
-  rule: string;
-  interpretation: string;
+  slNo: number; // Unique identifier
+  ruleIndex: string;
+  name?: string;
+  rule: string; // Rule description
+  diagramOrSpecs?: string;
   checked: boolean;
 };
 
 type RulesState = {
   rules: Rule[];
-  toggleRule: (id: string) => void;
-  resetRules: () => void; // New method to reset rules
+  toggleRule: (slNo: number) => void;
+  resetRules: () => void;
+  addUniqueSlNo: () => void;
 };
 
-// Load saved rules from localStorage (or use default rules)
+// Ensure unique `slNo` using a Set
+const formatRules = (rawRules: any[]): Rule[] => {
+  const seenSlNos = new Set<number>();
+
+  return rawRules.map((rule, index) => {
+    const slNo = rule.slNo ? Number(rule.slNo) : index + 1; // Generate fallback `slNo`
+    seenSlNos.add(slNo); // Add to Set to ensure uniqueness
+
+    return {
+      slNo,
+      ruleIndex: rule.ruleIndex,
+      name: rule.name || "",
+      rule: rule.rule || "",
+      diagramOrSpecs: rule.diagramOrSpecs || "",
+      checked: rule.checked ?? false, // Default checked state
+    };
+  });
+};
+
 const getSavedRules = (): Rule[] => {
   if (typeof window !== "undefined") {
     const storedRules = localStorage.getItem("fs-rules");
-    return storedRules ? JSON.parse(storedRules) : rules;
+    return storedRules ? JSON.parse(storedRules) : formatRules(rawRules);
   }
-  return rules; // Default rules (for SSR safety)
+  return formatRules(rawRules);
 };
 
-// Zustand Store with Persistence
 export const useRulesStore = create<RulesState>((set) => ({
   rules: getSavedRules(),
-  
-  toggleRule: (id) => {
+
+  toggleRule: (slNo: number) => {
     set((state) => {
       const updatedRules = state.rules.map((rule) =>
-        rule.id === id ? { ...rule, checked: !rule.checked } : rule
+        rule.slNo === slNo ? { ...rule, checked: !rule.checked } : rule
       );
 
-      // Save updated rules to localStorage
       if (typeof window !== "undefined") {
         localStorage.setItem("fs-rules", JSON.stringify(updatedRules));
       }
@@ -49,15 +66,28 @@ export const useRulesStore = create<RulesState>((set) => ({
 
   resetRules: () => {
     set(() => {
-      // Reset the rules to their initial state (unchecked)
-      const resetRules = rules.map((rule) => ({ ...rule, checked: false }));
+      const resetRules = formatRules(rawRules).map((rule) => ({ ...rule, checked: false }));
 
-      // Clear the localStorage
       if (typeof window !== "undefined") {
         localStorage.removeItem("fs-rules");
       }
 
-      return { rules: resetRules }; // Return the reset state
+      return { rules: resetRules };
+    });
+  },
+
+  addUniqueSlNo: () => {
+    set((state) => {
+      const seenSlNos = new Set<number>();
+      const updatedRules = state.rules.map((rule, index) => {
+        if (seenSlNos.has(rule.slNo)) {
+          rule.slNo = Math.max(...Array.from(seenSlNos)) + 1; // Generate a unique `slNo` if duplicated
+        }
+        seenSlNos.add(rule.slNo);
+        return rule;
+      });
+
+      return { rules: updatedRules };
     });
   },
 }));
