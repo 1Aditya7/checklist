@@ -40,6 +40,7 @@ export default function RootLayout({
         <main className="relative flex-auto min-w-0 flex flex-col px-6 sm:px-4 md:px-0 max-w-[1024px] z-10">
           {children}
         </main>
+        <Analytics />
       </body>
     </html>
   );
