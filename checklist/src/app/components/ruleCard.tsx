@@ -1,53 +1,69 @@
 "use client";
 
 import { useRulesStore } from "../store/useRulesStore";
-import { Card, CardContent } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card";
 import clsx from "clsx";
 
-// Define RuleCard component's props
 type RuleProps = {
   slNo: number;
   ruleIndex: string;
-  name?: string; // Allow name to be undefined
+  name?: string;
   description: string;
-  diagrams: string | undefined; // Keep diagrams as string | undefined
+  diagrams?: string;
   checked: boolean;
 };
-
-const cardContent = {
-  title: "Lorem ipsum dolor",
-  description: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nostrum, hic ipsum! Qui dicta debitis aliquid quo molestias explicabo iure!"
-}
 
 export default function RuleCard({
   slNo,
   ruleIndex,
   name,
-  description,
+  description: rawDescription, 
   diagrams,
   checked,
 }: RuleProps) {
   const toggleRule = useRulesStore((state) => state.toggleRule);
 
-  return (
+  const processedDescription = rawDescription?.split("●").map((part, index) => (
+    <p key={index}>
+      {index === 0 ? part.trim() : `• ${part.trim()}`} 
+    </p>
+  ));
 
-    <div
+  return (
+    <Card
+      variant="dots"
       className={clsx(
-        "p-4 border rounded-lg shadow-md flex justify-between items-center",
-        checked ? "bg-green-100 border-green-500" : "bg-white border-gray-300"
+        "p-4 relative border transition-colors duration-200",
+        checked
+          ? "border-green-500 bg-green-100 dark:bg-green-900 dark:border-green-400"
+          : "border-gray-300 dark:border-gray-700 bg-zinc-50 dark:zinc-800"
       )}
     >
-      <div>
-        <p className="font-semibold text-black">{ruleIndex} {name || ""}</p> {/* Use fallback if name is undefined */}
-        <p className="text-sm text-gray-500">{description}</p>
-        <p className="text-xs text-gray-400">{diagrams}</p>
-      </div>
-      <input
-        type="checkbox"
-        checked={checked}
-        onChange={() => toggleRule(slNo)} // Toggle rule on checkbox click
-        className="w-5 h-5 cursor-pointer"
-      />
-    </div>
+      <CardContent className="flex items-center justify-between p-3 min-h-[64px] mr-4">
+        <div className="space-y-0.5">
+          <p className="text-lg font-bold text-gray-900 dark:text-white">
+            {ruleIndex} {name && <span>{name}</span>}
+          </p>
+          {processedDescription && ( 
+            <div className="mr-8"> 
+              {/* Add margin to create space between text and checkbox */}
+              {processedDescription} 
+            </div>
+          )}
+          {diagrams && (
+            <p className="text-xs text-gray-500 dark:text-gray-400">{diagrams}</p>
+          )}
+        </div>
+        <div className="flex items-center self-center">
+          <input
+            type="checkbox"
+            checked={checked}
+            onChange={() => toggleRule(slNo)}
+            className="w-5 h-5 cursor-pointer accent-green-500"
+          />
+        </div>
+      </CardContent>
+
+    </Card>
   );
 }

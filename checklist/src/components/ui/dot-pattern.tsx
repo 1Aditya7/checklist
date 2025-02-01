@@ -1,5 +1,4 @@
 import { useId } from "react";
-
 import { cn } from "@/lib/utils";
 
 interface DotPatternProps extends React.SVGProps<SVGSVGElement> {
@@ -13,6 +12,7 @@ interface DotPatternProps extends React.SVGProps<SVGSVGElement> {
   className?: string;
   [key: string]: unknown;
 }
+
 export function DotPattern({
   width = 16,
   height = 16,
@@ -25,6 +25,7 @@ export function DotPattern({
   ...props
 }: DotPatternProps) {
   const id = useId();
+  const maskId = `${id}-mask`;
 
   return (
     <svg
@@ -35,7 +36,20 @@ export function DotPattern({
       )}
       {...props}
     >
+      {/* Define the mask with a subtle gradient for the fade-out effect */}
       <defs>
+        <mask id={maskId}>
+          <rect width="100%" height="100%" fill="white" />
+          <linearGradient id="fade-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="black" stopOpacity="0.8" /> {/* Fully transparent at the edges */}
+            <stop offset="20%" stopColor="black" stopOpacity="0.2" /> {/* Fully opaque in the center */}
+            <stop offset="80%" stopColor="black" stopOpacity="0.2" /> {/* Fully opaque in the center */}
+            <stop offset="100%" stopColor="black" stopOpacity="0.8" /> {/* Fully transparent at the edges */}
+          </linearGradient>
+          <rect width="100%" height="100%" fill="url(#fade-gradient)" />
+        </mask>
+
+        {/* Define the dot pattern */}
         <pattern
           id={id}
           width={width}
@@ -48,7 +62,15 @@ export function DotPattern({
           <circle id="pattern-circle" cx={cx} cy={cy} r={cr} />
         </pattern>
       </defs>
-      <rect width="100%" height="100%" strokeWidth={0} fill={`url(#${id})`} />
+
+      {/* Apply the mask to the dot pattern */}
+      <rect
+        width="100%"
+        height="100%"
+        strokeWidth={0}
+        fill={`url(#${id})`}
+        mask={`url(#${maskId})`}
+      />
     </svg>
   );
 }

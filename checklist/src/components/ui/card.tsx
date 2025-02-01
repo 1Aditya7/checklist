@@ -122,7 +122,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
         <div className="relative w-full border-x border-gradient-x">
           <div className="absolute inset-y-0 left-0 w-px bg-gradient-to-t from-zinc-200 via-zinc-400 to-zinc-600 dark:from-zinc-900 dark:via-zinc-700 dark:to-zinc-500" />
           <div className="absolute inset-y-0 right-0 w-px bg-gradient-to-t from-zinc-200 via-zinc-400 to-zinc-600 dark:from-zinc-900 dark:via-zinc-700 dark:to-zinc-500" />
-          <div className="relative z-20 mx-auto py-8">{content}</div>
+          <div className="relative z-20 mx-auto py-2">{content}</div>
         </div>
       </>
     )
@@ -245,7 +245,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
                 <div className="rounded-full outline outline-8 dark:outline-gray-950 sm:my-6 md:my-8 size-1 my-4 outline-gray-50 bg-green-400 translate-x-[2.5px] place-self-end" />
               </section>
             </div>
-            <div className="relative z-20 mx-auto py-8">{content}</div>
+            <div className="relative z-20 mx-auto py-2">{content}</div>
           </div>
         </div>
       )
