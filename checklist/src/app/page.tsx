@@ -30,8 +30,6 @@ export default function Home() {
     setIsHydrated(true);
   }, []);
 
-  if (!isHydrated) return null;
-
   return (
     <main className="flex-col px-6 sm:px-4 md:px-0 max-w-[1024px] w-full mt-8 font-sans">
       {/* Header */}
