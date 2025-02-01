@@ -11,24 +11,10 @@ import { HeroBanner } from "./components/HeroBanner";
 
 export default function Home() {
   const rules = useRulesStore((state) => state.rules);
-  const [isHydrated, setIsHydrated] = useState(false);
-
   const [isVisible, setIsVisible] = React.useState(true);
 
-  if (!isVisible) {
-    return (
-      <button 
-        onClick={() => setIsVisible(true)}
-        className="px-4 py-2 bg-blue-500 text-white rounded-md"
-      >
-        Show Banner
-      </button>
-    );
-  }
-
-  useEffect(() => {
-    setIsHydrated(true);
-  }, []);
+  // Handle visibility of the banner
+  const handleShowBanner = () => setIsVisible(true);
 
   return (
     <main className="flex-col px-6 sm:px-4 md:px-0 max-w-[1024px] w-full mt-8 font-sans">
@@ -45,14 +31,25 @@ export default function Home() {
           SAEINDIA, SAE International, and EV Rulebooks.
         </p>
         
-        <HeroBanner
-          buttonText="By Team Arion,"
-          description="Free & Open Source. Always and Forever."
-          onClick="https://www.instagram.com/_team.arion_/"
-        />
+        {/* Show Banner Button */}
+        {!isVisible && (
+          <button 
+            onClick={handleShowBanner}
+            className="px-4 py-2 bg-blue-500 text-white rounded-md"
+          >
+            Show Banner
+          </button>
+        )}
+
+        {isVisible && (
+          <HeroBanner
+            buttonText="By Team Arion,"
+            description="Free & Open Source. Always and Forever."
+            onClick="https://www.instagram.com/_team.arion_/"
+          />
+        )}
       </div>
       
-
       <div className="flex justify-end items-center mt-8 mb-8">
         <ResetButton />
       </div>
@@ -64,8 +61,6 @@ export default function Home() {
           <ProgressBar />
         </div>
       </div>
-
-
 
       {/* Rule Checklist */}
       <div className="mt-6 space-y-4">
@@ -81,6 +76,7 @@ export default function Home() {
           />
         ))}
       </div>
+
       <ScrollToTopButton />
     </main>
   );
