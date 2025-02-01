@@ -14,13 +14,13 @@ interface DotPatternProps extends React.SVGProps<SVGSVGElement> {
 }
 
 export function DotPattern({
-  width = 16,
-  height = 16,
+  width = 24, // Increased spacing between dots
+  height = 24, // Increased spacing between dots
   x = 0,
   y = 0,
-  cx = 1,
-  cy = 1,
-  cr = 1,
+  cx = 3, // Adjusted position of the dots
+  cy = 3, // Adjusted position of the dots
+  cr = 1.5, // Slightly larger dot size
   className,
   ...props
 }: DotPatternProps) {
@@ -36,20 +36,18 @@ export function DotPattern({
       )}
       {...props}
     >
-      {/* Define the mask with a subtle gradient for the fade-out effect */}
       <defs>
         <mask id={maskId}>
           <rect width="100%" height="100%" fill="white" />
           <linearGradient id="fade-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="black" stopOpacity="0.8" /> {/* Fully transparent at the edges */}
-            <stop offset="20%" stopColor="black" stopOpacity="0.2" /> {/* Fully opaque in the center */}
-            <stop offset="80%" stopColor="black" stopOpacity="0.2" /> {/* Fully opaque in the center */}
-            <stop offset="100%" stopColor="black" stopOpacity="0.8" /> {/* Fully transparent at the edges */}
+            <stop offset="0%" stopColor="black" stopOpacity="0.8" />
+            <stop offset="20%" stopColor="black" stopOpacity="0.2" />
+            <stop offset="80%" stopColor="black" stopOpacity="0.2" />
+            <stop offset="100%" stopColor="black" stopOpacity="0.8" />
           </linearGradient>
           <rect width="100%" height="100%" fill="url(#fade-gradient)" />
         </mask>
 
-        {/* Define the dot pattern */}
         <pattern
           id={id}
           width={width}
@@ -63,7 +61,6 @@ export function DotPattern({
         </pattern>
       </defs>
 
-      {/* Apply the mask to the dot pattern */}
       <rect
         width="100%"
         height="100%"

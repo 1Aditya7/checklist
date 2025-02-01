@@ -10,12 +10,11 @@ export default function ProgressBar() {
   return (
     <div className="mt-6">
       <div className="flex justify-between items-center">
-        <p className="text-sm font-medium text-gray-700">
+        <p className="text-sm font-bold text-gray-700">
           {checkedCount}/{rules.length} Rules Complying
         </p>
 
-
-        <p className="text-sm font-medium text-gray-700">
+        <p className="text-sm font-bold text-gray-700">
           {Math.round(progress)}% Compliant
         </p>
       </div>
@@ -26,7 +25,7 @@ export default function ProgressBar() {
           className="h-full transition-all duration-300"
           style={{
             width: `${progress}%`,
-            background: `linear-gradient(to right, #22c55e, #3b82f6 ${progress}%)`,
+            backgroundColor: '#22c55e', // Solid green color
           }}
         />
       </div>

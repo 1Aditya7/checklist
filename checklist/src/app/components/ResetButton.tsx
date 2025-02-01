@@ -1,45 +1,36 @@
-// app/components/ResetButton.tsx
 "use client";
 
 import { useState } from "react";
 import { useRulesStore } from "../store/useRulesStore";
-import ConfirmationModal from "./ConfirmationModal"; // Import the modal
+import ConfirmationModal from "./ConfirmationModal";
+import { Button } from "@/components/ui/button"; // Using ShadCN Button
 
 const ResetButton = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const resetRules = useRulesStore((state) => state.resetRules);
 
-  // Reset button logic
   const handleReset = () => {
-    // Open the confirmation modal
-    setIsModalOpen(true);
+    setIsModalOpen(true); // Open the modal
   };
 
-  // Confirm reset (call the reset function)
   const confirmReset = () => {
-    resetRules(); // Reset all rules
-    localStorage.removeItem("checkedRules"); // Clear progress from localStorage
-    window.location.reload(); // Reload the page to reflect the reset
-  };
-
-  // Cancel reset (close the modal)
-  const cancelReset = () => {
-    setIsModalOpen(false); // Close the modal without resetting
+    resetRules();
+    localStorage.removeItem("checkedRules");
+    window.location.reload();
   };
 
   return (
     <div>
-      <button
-        onClick={handleReset}
-        className="px-4 py-2 bg-red-500 text-white rounded-md"
-      >
+      <Button variant="outline" onClick={handleReset} className="bg-red-500 text-white hover:bg-red-600">
         Reset Progress
-      </button>
+      </Button>
 
-      {/* Confirmation Modal */}
-      {isModalOpen && (
-        <ConfirmationModal onConfirm={confirmReset} onCancel={cancelReset} />
-      )}
+      <ConfirmationModal
+        isOpen={isModalOpen}
+        setIsOpen={setIsModalOpen}
+        onConfirm={confirmReset}
+        onCancel={() => setIsModalOpen(false)}
+      />
     </div>
   );
 };
